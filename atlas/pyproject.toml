@@ -1,0 +1,19 @@
+atlas/
+├── pyproject.toml
+├── config/
+│   └── profiles.yaml
+└── atlas/
+    ├── __init__.py
+    ├── __main__.py
+    ├── core/
+    │   ├── __init__.py
+    │   ├── events.py
+    │   ├── router.py
+    │   └── context.py
+    ├── modes/
+    │   ├── __init__.py
+    │   └── base.py
+    └── cli/
+        ├── __init__.py
+        ├── commands.py
+        └── app.py
