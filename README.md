@@ -1,2 +1,2 @@
 # ATLAS
-Custom CLI coding agent system
+Custom CLI agent harness
