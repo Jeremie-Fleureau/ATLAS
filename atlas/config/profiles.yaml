@@ -1,0 +1,82 @@
+# config/profiles.yaml
+tiers:
+  tier_a:
+    name: "Tier A"
+    capability_rank: 1
+    endpoint: "http://127.0.0.1:8085/v1"
+    backend: "llama-server"
+    model_id: "qwen2.5-9b-instruct-q5_k_m.gguf"
+    residency: "vram"
+    max_slots: 16
+    default_slots: 8
+    total_kv_pool_tokens: 65536     # 8 slots -> 8k/slot; 4 slots -> 16k/slot
+    min_slot_ctx: 4096
+    max_slot_ctx: 16384
+
+  tier_b:
+    name: "Tier B"
+    capability_rank: 2
+    endpoint: "http://127.0.0.1:8085/v1"
+    backend: "llama-server"
+    model_id: "qwen3-30b-a3b-moe-q4_k_m.gguf"
+    residency: "ram"
+    max_slots: 1
+    default_slots: 1
+    total_kv_pool_tokens: 32768     # Fixed 32k context in 64GB system RAM
+    min_slot_ctx: 16384
+    max_slot_ctx: 65536
+
+  tier_c:
+    name: "Tier C"
+    capability_rank: 3
+    endpoint: "http://127.0.0.1:8085/v1"
+    backend: "llama-server"
+    model_id: "gemma-2-27b-it-q4_xs.gguf"
+    residency: "vram"
+    max_slots: 4
+    default_slots: 2
+    total_kv_pool_tokens: 24576     # 2 slots -> 12k/slot; 4 slots -> 6k/slot
+    min_slot_ctx: 4096
+    max_slot_ctx: 16384
+
+  tier_d:
+    name: "Tier D"
+    capability_rank: 4
+    endpoint: "http://127.0.0.1:8085/v1"
+    backend: "strata"
+    model_id: "deepseek-v3-lite-moe-offload"
+    residency: "hybrid"             # Locks both VRAM and RAM pools
+    max_slots: 1
+    default_slots: 1
+    total_kv_pool_tokens: 131072    # 128k context
+    min_slot_ctx: 32768
+    max_slot_ctx: 131072
+
+modes:
+  single:
+    default_reasoning: "cot"
+    roles:
+      solver: "tier_c"              # Or tier_d for deep 128k tasks
+
+  multi:
+    default_reasoning: "auto"
+    roles:
+      orchestrator: "tier_b"        # Co-runs in RAM alongside Tier A/C in VRAM
+      worker: "tier_a"
+      judge: "tier_b"
+
+  draft:
+    default_reasoning: "auto"
+    roles:
+      drafter: "tier_a"             # 8 parallel slots in VRAM
+      refiner: "tier_b"             # Zero-swap Refiner in RAM (or tier_c phased)
+      judge: "tier_b"
+
+  swarm:
+    default_reasoning: "tot"
+    roles:
+      architect: "tier_b"           # Upfront Deliverable Spec generator
+      peer: "tier_a"                # Parallel sandboxed peers in VRAM
+      committer: "tier_b"           # Validates diffs & merges into main
+      synthesizer: "tier_b"         # Audits main branch against Deliverable Spec
+      judge: "tier_b"
