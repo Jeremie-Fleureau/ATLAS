@@ -43,9 +43,9 @@ ATLAS categorizes your local models into four intelligence and residency tiers (
                          │             │             │
         ┌────────────────┘             │             └────────────────┐
         ▼                              ▼                              ▼
-┌──────────────────┐              ┌─────────────────┐              ┌─────────────────┐
-│   VRAM_POOL      │◄─ Co-Runs ──►│   RAM_POOL      │              │ EXCLUSIVE LOCK  │
-│ Tier A (8+ slot) │              │ Tier B (1 slot) │              │ Tier D (1 slot) │
-│   OR             │              │ 35B+ MoE        │              │ VRAM + RAM      │
-│ Tier C (1-4slolt)│              │ High Context    │              │ 128k+ Context   │
-└──────────────────┘              └─────────────────┘              └─────────────────┘
+┌──────────────────┐              ┌─────────────────┐             ┌─────────────────┐
+│   VRAM_POOL      │◄─ Co-Runs ──►│   RAM_POOL      │             │ EXCLUSIVE LOCK  │
+│ Tier A (8+ slot) │              │ Tier B (1 slot) │             │ Tier D (1 slot) │
+│   OR             │              │ 35B+ MoE        │             │ VRAM + RAM      │
+│ Tier C (1-4slolt)│              │ High Context    │             │ 128k+ Context   │
+└──────────────────┘              └─────────────────┘             └─────────────────┘
