@@ -32,6 +32,7 @@ ATLAS categorizes your local models into four intelligence and residency tiers (
 | **Tier D** | Large MoE (`Hybrid VRAM + RAM`) | Sequential (`1` slot) | Deep context tasks (`128k+` tokens) |
 
 ## Residency-Aware Scheduler Architecture
+```
                          ┌────────────────────────────┐
                          │   ATLAS Task & Mode Plan   │
                          └─────────────┬──────────────┘
@@ -49,3 +50,4 @@ ATLAS categorizes your local models into four intelligence and residency tiers (
 │   OR             │              │ 35B+ MoE        │             │ VRAM + RAM      │
 │ Tier C (1-4slolt)│              │ High Context    │             │ 128k+ Context   │
 └──────────────────┘              └─────────────────┘             └─────────────────┘
+```
