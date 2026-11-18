@@ -1,2 +1,2 @@
 # ATLAS
-Custom CLI agent harness
+Local multi-agent CLI harness for llama-server and strata
